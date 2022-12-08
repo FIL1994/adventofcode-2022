@@ -1,4 +1,3 @@
-import { dir } from "node:console";
 import * as fs from "node:fs";
 import * as readline from "node:readline";
 
@@ -13,18 +12,6 @@ abstract class FSNode {
   abstract isFile(): this is FileNode;
   abstract isDir(): this is DirNode;
   abstract size(): number;
-
-  get path() {
-    let str = this.name;
-
-    let curr = this.parent;
-    while (curr) {
-      str = `${curr.name}/${str}`;
-      curr = curr.parent;
-    }
-
-    return str;
-  }
 }
 
 class DirNode extends FSNode {
@@ -39,18 +26,11 @@ class DirNode extends FSNode {
   }
 
   size() {
-    let size = 0;
-
-    this.descendants.forEach((d) => {
-      size += d.size();
-    });
-
-    return size;
+    return this.descendants.reduce((acc, curr) => acc + curr.size(), 0);
   }
 
   get(name: string) {
-    let node = this.descendants.find((d) => d.name === name);
-    return node;
+    return this.descendants.find((d) => d.name === name);
   }
 
   add(node: FSNode) {
@@ -59,8 +39,6 @@ class DirNode extends FSNode {
     if (!existingNode) {
       node.parent = this;
       this.descendants.push(node);
-    } else {
-      throw new Error(`${node.name} already exists`);
     }
   }
 
