@@ -14,7 +14,7 @@ abstract class FSNode {
   abstract isDir(): this is DirNode;
   abstract size(): number;
 
-  toString() {
+  get path() {
     let str = this.name;
 
     let curr = this.parent;
@@ -172,12 +172,9 @@ function findDirToDelete(rootNode: DirNode) {
   const spaceToFree = 30000000 - (70000000 - node.size());
 
   let dirToDelete: DirNode;
-  let dirs = [];
 
-  for (const dir of node.childDirs()) {
+  for (const dir of rootNode.childDirs()) {
     if (dir.size() > spaceToFree) {
-      dirs.push(dir.name);
-
       if (!dirToDelete) {
         dirToDelete = dir;
       } else if (dirToDelete && dir.size() < dirToDelete.size()) {
@@ -202,5 +199,3 @@ console.log(
 
 // part 2
 console.log("size of dir to delete", findDirToDelete(node));
-
-console.log(process.memoryUsage().heapUsed / 1024 / 1024);
