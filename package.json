@@ -5,6 +5,7 @@
   "main": "day1.js",
   "type": "module",
   "scripts": {
+    "day2": "ts-node --esm day2.ts",
     "day7": "ts-node --esm day7.ts"
   },
   "repository": {
