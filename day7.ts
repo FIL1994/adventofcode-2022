@@ -183,7 +183,7 @@ function findDirToDelete(rootNode: DirNode) {
     }
   }
 
-  return dir;
+  return dirToDelete;
 }
 
 const node = await parseTree("./inputs/day7.txt");
@@ -198,4 +198,4 @@ console.log(
 );
 
 // part 2
-console.log("size of dir to delete", findDirToDelete(node));
+console.log("size of dir to delete", findDirToDelete(node).size());
